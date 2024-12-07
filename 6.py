@@ -90,18 +90,16 @@ def part2(filename):
 
     visited = walk(map, x, y, dx, dy)
 
-    startx, starty = x, y
-    startdx, startdy = dx, dy
     res = 0
     for psx, psy in list(visited):
-        x, y = startx, starty
-        dx, dy = startdx, startdy
+        currx, curry = x, y
+        currdx, currdy = dx, dy
 
         # Setting a wall in one of the visited points
         tempmap = map.copy()
         tempmap[psx] = tempmap[psx][:psy] + '#' + tempmap[psx][psy+1:]
 
-        if is_cycle_with_new_stone(tempmap, x, y, dx, dy, len(visited)):
+        if is_cycle_with_new_stone(tempmap, currx, curry, currdx, currdy, len(visited)):
             res += 1
         
     print("Part 2 for ", filename, " is ", res)
