@@ -35,36 +35,20 @@ def walk(map, x, y, dx, dy):
         dx, dy = rotate(dx, dy)
     return visited
 
-
 def get_starting_point(map):
-    x, y = 0, 0
-    dx, dy = 0, 0
     for i in range(len(map)):
         for j in range(len(map[0])):
-            temp = map[i][j]
-            if temp == '^':
-                dx = -1
-                x, y = i, j
-            if temp == 'v':
-                dx = 1
-                x, y = i, j
-            if temp == '<':
-                dy = -1
-                x, y = i, j
-            if temp == '>':
-                dy = 1
-                x, y = i, j
-    return x, y, dx, dy
+            if map[i][j] == '^':
+                return i, j
 
 def part1(filename):
     map = data(filename)
-    x, y, dx, dy = get_starting_point(map)
+    dx, dy = -1, 0
+    x, y = get_starting_point(map)
         
     visited = walk(map, x, y, dx, dy)
 
     print("Part 1 for ", filename, " is ", len(visited))
-
-
 
 def part2(filename):
     def is_cycle_with_new_stone(map, x, y, dx, dy, maxmoves):
@@ -86,7 +70,8 @@ def part2(filename):
         return False
     
     map = data(filename)
-    x, y, dx, dy = get_starting_point(map)
+    dx, dy = -1, 0
+    x, y = get_starting_point(map)
 
     visited = walk(map, x, y, dx, dy)
 
@@ -104,7 +89,6 @@ def part2(filename):
         
     print("Part 2 for ", filename, " is ", res)
 
-    
 
 part1("data/6demo.txt")
 part1("data/6.txt")
