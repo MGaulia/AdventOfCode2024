@@ -9,11 +9,9 @@ def getdata(filename):
     idx = 0
     while idx < len(numtext):
         if len(numtext) - idx == 1:
-            # print("Appending", numtext[idx], 0)
             data.append([numtext[idx], 0])
             break
         else:
-            # print("Appending", numtext[idx], numtext[idx+1])
             data.append([numtext[idx], numtext[idx + 1]])
             idx += 2
     print(data)
@@ -81,23 +79,6 @@ def joinzeros(temp):
     return newtemp
 
 
-def joinnums(temp):
-    newtemp = []
-    tempdots = ""
-    for t in temp:
-        if set(t) == dotset:
-            tempdots += t
-        else:
-            if len(tempdots) > 0:
-                newtemp.append(tempdots)
-                tempdots = ""
-            newtemp.append(t)
-    if len(tempdots) > 0:
-        newtemp.append(tempdots)
-
-    return newtemp
-
-
 def part2(filename):
     data = getdata(filename)
     temp = []
@@ -109,38 +90,35 @@ def part2(filename):
             temp.append(space * ".")
         idx += 1
 
+    # Getting values to remove in reverse order
     toremove = []
     for i in range(len(temp) - 1, -1, -1):
         if set(temp[i]) != dotset:
             toremove.append(temp[i])
-    # print(toremove)
-
-    temp = joinzeros(temp)
 
     for remove in toremove:
+        # Recalculating index since it might have changed
         i = temp.index(remove)
-        # print(i, remove)
-        # print("".join(temp))
-        # print(temp)
         curr = remove
         spaceneeded = len(curr)
 
         for j in range(0, i):
-            # print("Trying", j, temp[j])
             freespace = len(temp[j])
+            # if current space is dots only and length is greater than or equal to space needed
             if set(temp[j]) == dotset and freespace >= spaceneeded:
                 leftoverspace = freespace - spaceneeded
+                # set the newplace to the current value
                 temp[j] = curr
+                # set the old place to dots * length
                 temp[i] = spaceneeded * "."
+                # if we have leftover space, insert it after the newplace
                 if leftoverspace > 0:
                     temp.insert(j + 1, leftoverspace * ".")
 
+                # Joing all consecutive dots together
                 temp = joinzeros(temp)
-                # print(temp)
-                # print()
 
                 break
-        # print(temp)
     print("".join(temp))
 
     res = 0
@@ -149,7 +127,6 @@ def part2(filename):
         if set(temp[idx]) == dotset:
             continue
         else:
-            # print("idx", idx, "temp[idx]", temp[idx])
             res += idx * int(temp[idx])
     print("Part 2 for", filename, "is", res)
 
